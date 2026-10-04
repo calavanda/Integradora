@@ -11,12 +11,20 @@
     "biome-write": "npx @biomejs/biome format --write ."
   },
   "dependencies": {
+    "@clerk/backend": "^3.20.1",
+    "@clerk/nextjs": "^7.9.7",
+    "@gsap/react": "^2.1.2",
     "@once-ui-system/core": "^2.0.0",
+    "@react-icons/all-files": "^4.1.0",
+    "@types/leaflet": "^1.9.22",
     "classnames": "^2.5.1",
+    "gsap": "^3.15.0",
+    "leaflet": "^1.9.4",
+    "mongodb": "^7.7.0",
     "next": "^16.2.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-icons": "^5.2.1",
+    "react-icons": "^5.7.0",
     "sass": "^1.77.6",
     "sharp": "^0.33.4"
   },
