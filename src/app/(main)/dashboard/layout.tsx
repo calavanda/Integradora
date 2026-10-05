@@ -4,6 +4,8 @@ import { AccesoRestringido } from "@/components/auth/AccesoRestringido";
 
 const ADMIN_EMAIL = "22610282@utgz.edu.mx";
 
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
+
 export default async function DashboardLayout({
   children,
 }: {
@@ -25,5 +27,5 @@ export default async function DashboardLayout({
     return <AccesoRestringido emailActual={emailConectado} adminRequerido={ADMIN_EMAIL} />;
   }
 
-  return <>{children}</>;
+  return <DashboardShell>{children}</DashboardShell>;
 }

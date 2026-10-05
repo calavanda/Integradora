@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef } from "react";
 import L from "leaflet";
@@ -29,6 +29,7 @@ export interface DatosMarcadorCamion {
   velocidad: number;
   estado: EstadoCamion;
   ruta: string;
+  orientacion?: number;
 }
 
 // ──────────────────────────────────────────────────────────────────────
@@ -48,7 +49,7 @@ interface MapaLeafletProps {
 // ──────────────────────────────────────────────────────────────────────
 // Helpers de iconos SVG inline
 // ──────────────────────────────────────────────────────────────────────
-function crearIconoCamion(estado: EstadoCamion, seleccionado: boolean): L.DivIcon {
+function crearIconoCamion(estado: EstadoCamion, seleccionado: boolean, orientacion?: number): L.DivIcon {
   const colores: Record<EstadoCamion, string> = {
     EN_RUTA: "#30D158",
     EN_PAUSA: "#FFD60A",
@@ -58,10 +59,20 @@ function crearIconoCamion(estado: EstadoCamion, seleccionado: boolean): L.DivIco
   const color = colores[estado];
   const escala = seleccionado ? 1.3 : 1;
   const sombra = seleccionado ? `drop-shadow(0 0 8px ${color})` : "none";
-  const size = Math.round(36 * escala);
-  const anchor = Math.round(18 * escala);
+  const size = Math.round(38 * escala);
+  const anchor = Math.round(19 * escala);
+  const angulo = orientacion || 0;
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 36 36" style="filter:${sombra}"><circle cx="18" cy="18" r="16" fill="${color}" fill-opacity="0.18" stroke="${color}" stroke-width="2"/><text x="18" y="23" text-anchor="middle" font-size="16" fill="${color}">🚛</text></svg>`;
+  const flechaRumbo = orientacion !== undefined ? `
+    <g transform="rotate(${angulo} 19 19)">
+      <polygon points="19,2 23,8 15,8" fill="${color}" stroke="#ffffff" stroke-width="0.8" />
+    </g>` : "";
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 38 38" style="filter:${sombra}">
+    <circle cx="19" cy="19" r="16" fill="${color}" fill-opacity="0.22" stroke="${color}" stroke-width="2"/>
+    ${flechaRumbo}
+    <text x="19" y="24" text-anchor="middle" font-size="16" fill="${color}">🚛</text>
+  </svg>`;
 
   return L.divIcon({
     html: svg,
@@ -120,12 +131,27 @@ export default function MapaLeaflet({
       attributionControl: true,
     });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      maxZoom: 19,
-    }).addTo(mapa);
+    // OpenStreetMap CDN oficial: 100% Gratuito, sin marcas de agua, sin API Key
+    const capaMapasLibre = L.tileLayer(
+      "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+        minZoom: 10,
+        updateWhenIdle: false,
+        keepBuffer: 4,
+      }
+    );
+
+    capaMapasLibre.addTo(mapa);
 
     mapaRef.current = mapa;
+
+    // Asegurar recálculo de dimensiones del mapa tras montar en el DOM
+    setTimeout(() => {
+      mapa.invalidateSize();
+    }, 250);
 
     return () => {
       mapa.remove();
@@ -168,7 +194,7 @@ export default function MapaLeaflet({
 
     camiones.forEach((camion) => {
       const seleccionado = camion.id === idCamionSeleccionado;
-      const icono = crearIconoCamion(camion.estado, seleccionado);
+      const icono = crearIconoCamion(camion.estado, seleccionado, camion.orientacion);
 
       if (marcadoresCamionesRef.current.has(camion.id)) {
         const marcador = marcadoresCamionesRef.current.get(camion.id)!;

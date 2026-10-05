@@ -13,6 +13,7 @@ import {
   Badge,
   Avatar,
   StatusIndicator,
+  IconButton,
 } from "@once-ui-system/core";
 import { BsPersonFillGear } from "react-icons/bs";
 import {
@@ -157,6 +158,21 @@ export function VistaUsuarios() {
     setNuevoRolEdit(usuario.rol);
     setNuevoDeptoEdit(usuario.departamento || "");
     setMensajeRol(null);
+  };
+
+  const eliminarUsuario = async (clerkId: string, nombre: string) => {
+    if (!confirm(`¿Eliminar al usuario ${nombre}? Esta acción eliminará su cuenta en Clerk y sus roles en MongoDB.`)) return;
+    try {
+      const res = await fetch(`/api/v1/usuarios?clerkId=${clerkId}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.ok) {
+        await cargarUsuarios();
+      } else {
+        alert(data.error || "No se pudo eliminar el usuario.");
+      }
+    } catch (err: any) {
+      alert(`Error al eliminar: ${err.message}`);
+    }
   };
 
   // Guardar cambio de rol en MongoDB
@@ -393,7 +409,7 @@ export function VistaUsuarios() {
                     </Text>
                   </Column>
 
-                  <Row gap="8">
+                  <Row gap="8" vertical="center">
                     <Button
                       variant="ghost"
                       size="s"
@@ -404,6 +420,16 @@ export function VistaUsuarios() {
                         <Text>Rol / Permisos</Text>
                       </Row>
                     </Button>
+
+                    {usuario.email.toLowerCase() !== "22610282@utgz.edu.mx" && (
+                      <IconButton
+                        icon="close"
+                        size="s"
+                        variant="danger"
+                        aria-label="Eliminar usuario"
+                        onClick={() => eliminarUsuario(usuario.clerkId, usuario.nombre)}
+                      />
+                    )}
                   </Row>
                 </Row>
               </Row>

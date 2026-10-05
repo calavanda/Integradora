@@ -16,7 +16,7 @@ import { FaBuildingColumns, FaCompassDrafting, FaHeadset, FaTruck, FaPeopleRoof,
 
 export interface ElementoRol {
   id: string;
-  claveRol: "SUPER_ADMIN" | "DIRECTOR_OBRAS" | "OPERADOR" | "CONDUCTOR" | "CIUDADANO";
+  claveRol: "SUPER_ADMIN" | "DIRECTOR_OBRAS" | "OPERADOR_DESPACHADOR" | "OPERADOR" | "CONDUCTOR" | "CIUDADANO";
   nombre: string;
   dependencia: string;
   usuariosAsignados: number;
@@ -51,8 +51,8 @@ const rolesGubernamentalesZamora: ElementoRol[] = [
   },
   {
     id: "ROL-GZ-03",
-    claveRol: "OPERADOR",
-    nombre: "OPERADOR",
+    claveRol: "OPERADOR_DESPACHADOR",
+    nombre: "OPERADOR_DESPACHADOR",
     dependencia: "Centro de Despacho y Monitoreo",
     usuariosAsignados: 6,
     descripcion: "Mapa interactivo a pantalla completa con actualización en vivo, Badges visuales Once UI por estado, resolución de incidentes, validación de reclamos ciudadanos y Botón de Contingencia Climática.",
@@ -66,8 +66,8 @@ const rolesGubernamentalesZamora: ElementoRol[] = [
     nombre: "CONDUCTOR",
     dependencia: "Sindicato / Operadores de Camión",
     usuariosAsignados: 18,
-    descripcion: "Ingesta de telemetría directa desde la app móvil en Flutter mediante el celular del chófer a través de la API POST /api/v1/telemetry/driver-location y reporte de incidencias en ruta.",
-    privilegios: ["Transmisión GPS Flutter", "Bitácora de Tolva", "Reporte de Cierre Vial", "Asistencia de Taller"],
+    descripcion: "Ingesta de telemetría directa desde la app móvil en React Native mediante el celular del chófer a través de la API POST /api/v1/telemetria/actualizar-ubicacion y reporte de incidencias en ruta.",
+    privilegios: ["Transmisión GPS React Native", "Bitácora de Tolva", "Reporte de Cierre Vial", "Asistencia de Taller"],
     nivel: "Campo",
     icono: <FaTruck size={26} color="#30D158" />,
   },

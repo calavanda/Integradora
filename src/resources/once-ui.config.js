@@ -33,31 +33,32 @@ const fonts = {
   code: code,
 };
 
-// default customization applied to the HTML in the main layout.tsx
+// EcoRuta — Paleta Institucional Municipal
+// Cyan brand: gobierno cívico-tecnológico, profesional, no genérico
 const style = {
-  theme: "system", // dark | light | system
-  neutral: "gray", // sand | gray | slate | mint | rose | dusk | custom
-  brand: "blue", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-  accent: "indigo", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan
-  solid: "contrast", // color | contrast | inverse
-  solidStyle: "flat", // flat | plastic
-  border: "playful", // rounded | playful | conservative | sharp
-  surface: "filled", // filled | translucent
-  transition: "all", // all | micro | macro
-  scaling: "100", // 90 | 95 | 100 | 105 | 110
+  theme: "dark",         // Dashboard operativo = dark mode lock
+  neutral: "gray",       // Neutro institucional sin sesgo de temperatura
+  brand: "cyan",         // Cívico-tecnológico — no neon verde genérico
+  accent: "cyan",        // Acento consistente con marca
+  solid: "contrast",     // Botones de alto contraste
+  solidStyle: "flat",    // Plano, sin plástico
+  border: "conservative",// Gobierno = bordes sobrios
+  surface: "translucent",// Profundidad sutil con translucencia
+  transition: "all",     // Transiciones en todos los elementos
+  scaling: "100",        // Escala estándar
 };
 
 const dataStyle = {
-  variant: "gradient", // flat | gradient | outline
-  mode: "categorical", // categorical | divergent | sequential
-  height: 24, // default chart height
+  variant: "flat",        // Datos planos, legibilidad primero
+  mode: "categorical",
+  height: 24,
   axis: {
     stroke: "var(--neutral-alpha-weak)",
   },
   tick: {
     fill: "var(--neutral-on-background-weak)",
     fontSize: 11,
-    line: false
+    line: false,
   },
 };
 

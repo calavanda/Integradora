@@ -136,3 +136,53 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message || "Error al actualizar rol" }, { status: 500 });
   }
 }
+
+// DELETE /api/v1/usuarios — Elimina un usuario de Clerk y de MongoDB
+export async function DELETE(request: Request) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    let clerkId = searchParams.get("clerkId");
+
+    if (!clerkId) {
+      try {
+        const body = await request.json();
+        clerkId = body.clerkId;
+      } catch {
+        // no body
+      }
+    }
+
+    if (!clerkId) {
+      return NextResponse.json({ error: "El clerkId es requerido para eliminar" }, { status: 400 });
+    }
+
+    // 1. Eliminar de Clerk
+    const clerk = await clerkClient();
+    try {
+      await clerk.users.deleteUser(clerkId);
+    } catch (clerkErr: any) {
+      console.warn("Aviso al eliminar de Clerk:", clerkErr.message);
+    }
+
+    // 2. Eliminar de MongoDB
+    const conexion = await getMongoDb();
+    if (conexion) {
+      const { client, db } = conexion;
+      try {
+        await db.collection("usuario_roles").deleteOne({ clerkId });
+      } finally {
+        await client.close();
+      }
+    }
+
+    return NextResponse.json({ ok: true, mensaje: "Usuario eliminado exitosamente" });
+  } catch (error: any) {
+    console.error("[DELETE /api/v1/usuarios] Error:", error);
+    return NextResponse.json({ error: error.message || "Error al eliminar usuario" }, { status: 500 });
+  }
+}

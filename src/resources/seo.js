@@ -1,28 +1,25 @@
-// IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
-const baseURL = "https://demo.once-ui.com";
+// SEO y Metadatos para EcoRuta (Zamora Limpia) — Gutiérrez Zamora, Ver.
+const baseURL = "https://ecoruta.zamora.gob.mx";
 
-// metadata for pages
 const meta = {
   home: {
     path: "/",
-    title: "Once UI for Next.js",
+    title: "EcoRuta · Zamora Limpia | Plataforma Municipal de Gestión y Monitoreo Ambiental",
     description:
-      "An open-source design system and component library for Next.js that emphasizes easy styling and accessibility in UI development.",
+      "Plataforma gubernamental de monitoreo satelital en tiempo real para recolección de basura, trazado de rutas OSRM y atención ciudadana en Gutiérrez Zamora, Veracruz.",
     image: "/images/og/home.jpg",
-    canonical: "https://once-ui.com",
+    canonical: baseURL,
     robots: "index,follow",
-    alternates: [{ href: "https://once-ui.com", hrefLang: "en" }],
+    alternates: [{ href: baseURL, hrefLang: "es" }],
   },
-  // add more routes and reference them in page.tsx
 };
 
-// default schema data
 const schema = {
   logo: "",
-  type: "Organization",
-  name: "Once UI",
+  type: "GovernmentOrganization",
+  name: "EcoRuta - H. Ayuntamiento de Gutiérrez Zamora",
   description: meta.home.description,
-  email: "lorant@once-ui.com",
+  email: "servicios.publicos@gutierrezzamora.gob.mx",
 };
 
 export { meta, schema, baseURL };
