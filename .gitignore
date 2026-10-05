@@ -35,6 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-
+# guia de usuario
 GUIA.MD
+
+# variables de entorno
 .env
